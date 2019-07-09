@@ -73,6 +73,31 @@ server.post("/api/posts/:id/comments", (req, res) => {
   }
 });
 
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  if (!id || isNaN(id)) {
+    return res.status(400).json({
+      errorMessage: "Please provide a Numeric Id"
+    });
+  }
+  try {
+    db.findById(id).then(data => {
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
+      res.status(200).json({
+        data: data
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "The posts information could not be retrieved."
+    });
+  }
+});
+
 server.listen(4000, () => {
   console.log("\n*** Server Running on http://localhost:4000 ***\n");
 });
