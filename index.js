@@ -41,6 +41,38 @@ server.get("/api/posts", (req, res) => {
   }
 });
 
+server.post("/api/posts/:id/comments", (req, res) => {
+  const { text } = req.body;
+  const { id } = req.params;
+  if (!text) {
+    return res.status(400).json({
+      errorMessage: "Please provide text for the text."
+    });
+  } else if (!id || isNaN(id)) {
+    return res.status(400).json({
+      errorMessage: "Please provide a Numeric ID"
+    });
+  }
+  try {
+    db.findById(id).then(data => {
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
+      db.insertComment({ post_id: id, text }).then(data => {
+        res.status(201).json({
+          message: data
+        });
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "The comments information could not be retrieved."
+    });
+  }
+});
+
 server.listen(4000, () => {
   console.log("\n*** Server Running on http://localhost:4000 ***\n");
 });
