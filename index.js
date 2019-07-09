@@ -147,7 +147,38 @@ server.delete("/api/posts/:id", (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      error: "The posts information could not be retrieved."
+      error: "The post could not be removed"
+    });
+  }
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  if (!id || isNaN(id)) {
+    return res.status(400).json({
+      errorMessage: "Please provide a Numeric Id"
+    });
+  } else if (!req.body) {
+    return res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+  try {
+    db.findById(id).then(data => {
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
+      db.update(id, req.body).then(data => {
+        res.status(200).json({
+          data: data
+        });
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "The post information could not be modified."
     });
   }
 });
