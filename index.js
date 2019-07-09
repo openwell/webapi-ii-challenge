@@ -21,8 +21,22 @@ server.post("/api/posts", (req, res) => {
       });
     });
   } catch (err) {
-    res.json({
+    res.status(500).json({
       error: "There was an error while saving the post to the database"
+    });
+  }
+});
+
+server.get("/api/posts", (req, res) => {
+  try {
+    db.find().then(data => {
+      res.status(200).json({
+        data: data
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "The posts information could not be retrieved."
     });
   }
 });
