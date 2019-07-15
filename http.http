@@ -1,0 +1,39 @@
+### 
+GET http://localhost:4000/ 
+
+### 
+POST http://localhost:4000/api/posts HTTP/1.1
+  content-type: application/json
+
+   {
+  "title": "The post title",
+  "contents": "The post contents"
+   }
+
+### 
+GET http://localhost:4000/api/posts 
+
+### 
+POST http://localhost:4000/api/posts/14/comments HTTP/1.1
+  content-type: application/json
+
+   {
+    "text": "The post title"
+   }
+### 
+GET http://localhost:4000/api/posts/12
+
+### 
+GET http://localhost:4000/api/posts/1/comments
+
+### 
+DELETE  http://localhost:4000/api/posts/11/
+
+### 
+PUT http://localhost:4000/api/posts/10 HTTP/1.1
+  content-type: application/json
+
+   {
+  "title": "The post titles",
+  "contents": "The post contents"
+   }
